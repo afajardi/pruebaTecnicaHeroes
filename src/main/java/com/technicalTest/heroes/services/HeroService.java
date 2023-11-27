@@ -22,7 +22,7 @@ public class HeroService {
     
     
     private HeroRepository heroRepo;
-    private final ModelMapper mapper;
+    private ModelMapper mapper;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(HeroService.class);
 
@@ -32,10 +32,10 @@ public class HeroService {
         mapper = new ModelMapper();
     }
 
-    public ResponseEntity<String> createHero(HeroDto hero){
+    public ResponseEntity<HeroDto> createHero(HeroDto hero){
         Hero heroCreated = heroRepo.save(mapper.map(hero, Hero.class));
         LOGGER.info("Hero created: " + heroCreated);
-        return new ResponseEntity<>("Hero with id: " + heroCreated.getHeroId()+ " was created",HttpStatus.CREATED);
+        return new ResponseEntity<>(mapper.map(heroCreated, HeroDto.class),HttpStatus.CREATED);
 
     }
 
@@ -52,12 +52,17 @@ public class HeroService {
     public HeroDto updateHero(HeroDto heroDto){
         
         Hero hero = heroRepo.findByHeroId(heroDto.getHeroId());
+        
+        if(hero == null){
+            LOGGER.error("Hero entity does not exist");
+             throw new EmptyDataAccesException("Hero entity does not exist", 0, "E-405" ,HttpStatus.INTERNAL_SERVER_ERROR );
+        }
 
         hero.setHeroName(heroDto.getHeroName());
         hero.setPower(heroDto.getPower());
         hero.setRealName(heroDto.getRealName());
         heroRepo.save(hero);
-
+    
         return mapper.map(hero, HeroDto.class);
     }
 

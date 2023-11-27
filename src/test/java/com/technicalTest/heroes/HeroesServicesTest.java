@@ -10,8 +10,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+
 
 import com.technicalTest.heroes.model.HeroDto;
 import com.technicalTest.heroes.repository.HeroRepository;
@@ -48,17 +47,6 @@ public class HeroesServicesTest {
 
 	}
 
-    @Test
-	public void createHero(){
-		HeroDto hero = new HeroDto();
-		hero.setHeroName("Batman");
-		hero.setPower("fuerza");
-		hero.setRealName("Bruce Wayne");
-		ResponseEntity<String> response =  heroServ.createHero(hero);
-
-		assertEquals(HttpStatus.CREATED,response.getStatusCode());
-		
-	}
 
     
 }

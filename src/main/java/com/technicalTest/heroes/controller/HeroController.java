@@ -71,7 +71,7 @@ public class HeroController {
 
     @PostMapping("/addHero")
     @ApiOperation("Create a new hero")
-    public ResponseEntity<String> createHero(@RequestBody HeroDto hero){
+    public ResponseEntity<HeroDto> createHero(@RequestBody HeroDto hero){
         
         return heroService.createHero(hero);
     }
